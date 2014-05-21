@@ -46,7 +46,15 @@ function get_post_by_id($id)
 	$link = open_database_connection();
 
 	$id = intval($id);
-	$query = 'SELECT date, title, content FROM Post WHERE id ='.$id;
+	$query = 'SELECT 
+				Post.date, 
+				Post.title, 
+				Post.content, 
+				Author.name as author 
+			  FROM Post INNER JOIN Author
+			  ON Post.author = Author.id 
+			  WHERE Post.id ='.$id;
+
 	$result = mysql_query($query);
 	$row = mysql_fetch_assoc($result);
 

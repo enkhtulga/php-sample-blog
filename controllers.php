@@ -11,4 +11,8 @@ function show_action($id)
 	require 'templates/show.php';
 }
 
+function show_layout1()
+{
+	require 'templates/layout1.php';
+}
 ?>

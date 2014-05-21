@@ -8,15 +8,18 @@ require_once 'controllers.php';
 
 $uri = $_SERVER['REQUEST_URI'];
 $uri1 = explode("?", $uri);
-//echo $uri1;
 
 if('/index.php' == $uri){
 	list_action();
 } elseif ('/index.php/show' == $uri1[0] && isset($_GET['id']) ){
 	show_action($_GET['id']);
+} elseif('/index.php/layout1' == $uri1[0]){
+	show_layout1();
 } else {
 	header('Status: 404 Not found');
 	echo '<html><body><h1>Page Not Found1</h1></body></html>';
 }
 
 ?>
+
+
