@@ -1,9 +1,10 @@
 <?php
+require_once 'local_settings.php';
 
 function open_database_connection()
 {
-	$link = mysql_connect('localhost', 'root', 'root');
-	mysql_select_db('Sample_blog', $link);
+	$link = mysql_connect($localhost, $db_username, $db_password);
+	mysql_select_db($db_name, $link);
 	mysql_query("SET NAMES 'UTF8'", $link);
 	return $link;
 }
