@@ -18,12 +18,7 @@ if('/index.php' == $uri){
 	add_action();
 	
 } elseif('/index.php/edit' == $uri1[0] && isset($_GET['id'])){
-	edit_action($_GET['id']);
-	
-} elseif('/index.php/test' == $uri1[0]){
-	ob_start();
-	echo "1";
-	$content= ob_get_contents();
+	edit_action($_GET['id']);	
 }
   else {
 	header('Status: 404 Not found');
