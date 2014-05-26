@@ -2,7 +2,6 @@
 
 function open_database_connection()
 {
-#	require_once 'local_settings.php';
 	require 'local_settings.php';
 	$link = mysql_connect($db_host, $db_username, $db_password);
 	mysql_select_db($db_name, $link);
