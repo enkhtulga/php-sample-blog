@@ -11,20 +11,16 @@ function show_action($id)
 	require 'templates/show.php';
 }
 
-function add_action(){
-	
-	if(isset($_POST['title']) && isset($_POST['content'])){	
-		
-		$input_title = $_POST['title'];	
+function add_action()
+	if(isset($_POST['title']) && isset($_POST['content'])){
+		$input_title = $_POST['title'];
 		$input_content = $_POST['content'];
 		$input_date = Date('Y-m-d H:i:s');
-		
-			
 		$post = add_post($input_title, $input_content, $input_date);
 		$location='Location: /index.php';
 		header($location);
 	}
-	require 'templates/add.php';	
+	require 'templates/add.php';
 }
 
 ?>

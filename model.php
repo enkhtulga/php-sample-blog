@@ -65,11 +65,11 @@ function get_post_by_id($id)
 }
 function add_post($input_title,	$input_content,	$input_date){
 	$link = open_database_connection();
-	$query ="INSERT INTO Post 
-		Values(NULL, 
-			'$input_title', 
-			'$input_content', 
-			'$input_date', 
+	$query ="INSERT INTO Post
+		Values(NULL,
+			'$input_title',
+			'$input_content',
+			'$input_date',
 			1);";
 	$result = mysql_query($query);
 
