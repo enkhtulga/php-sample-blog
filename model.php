@@ -2,7 +2,8 @@
 
 function open_database_connection()
 {
-	require_once 'local_settings.php';
+#	require_once 'local_settings.php';
+	require 'local_settings.php';
 	$link = mysql_connect($db_host, $db_username, $db_password);
 	mysql_select_db($db_name, $link);
 	mysql_query("SET NAMES 'UTF8'", $link);
@@ -47,8 +48,9 @@ function get_post_by_id($id)
 	$link = open_database_connection();
 
 	$id = intval($id);
-	$query = 'SELECT 
-				Post.date, 
+	$query = 'SELECT
+				Post.id AS id, 
+				Post.date AS date, 
 				Post.title, 
 				Post.content, 
 				Author.name as author 
@@ -64,5 +66,23 @@ function get_post_by_id($id)
 	return $row;
 }
 
+function edit_post($id, $title, $content, $date)
+{
+	$link = open_database_connection();
+	
+	$id = intval($id);
+	$query = "UPDATE Post
+			SET title = '$title',
+			content = '$content',
+			date = '$date'
+		WHERE id = $id";
+	$result = mysql_query($query);
+
+#	mysql_query("SET NAMES 'UTF8'", $query);
+		
+	close_database_connection($link);	
+	
+#	die($query);
+}
 ?>
 
