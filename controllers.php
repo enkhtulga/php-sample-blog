@@ -19,10 +19,9 @@ function edit_action($id)
 		$title = $_POST['title'];
 		$content = $_POST['content'];
 		$date = $post1['date'];
-		var_dump($_POST); 
 		$post = edit_post($id, $title, $content, $date);
 		header('Location: /index.php');
 	}
-	require 'templates/edit.php';	
+	require 'templates/edit.php';
 }
 ?>
