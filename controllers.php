@@ -13,15 +13,17 @@ function show_action($id)
 
 function edit_action($id)
 {
-	$post1 = get_post_by_id($id);
+	$post = get_post_by_id($id);
 	if(isset($_POST['title']) && isset($_POST['content']))
 	{
 		$title = $_POST['title'];
 		$content = $_POST['content'];
-		$date = $post1['date'];
+		$date = $post['date'];
 		$post = edit_post($id, $title, $content, $date);
 		header('Location: /index.php');
 	}
-	require 'templates/edit.php';
+	else{
+		require 'templates/edit.php';
+	}
 }
 ?>
