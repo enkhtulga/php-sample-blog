@@ -92,11 +92,11 @@ function delete_post($id)
 {
 	$link = open_database_connection();
 	$id = intval($id);
-	$query = "DELETE 
+	$query = "DELETE
 		FROM Post
 		WHERE id = '$id'";
 	$result = mysql_query($query);
-	
+
 	close_database_connection($link);
 }
 

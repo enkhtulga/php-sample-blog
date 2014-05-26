@@ -42,5 +42,6 @@ function edit_action($id)
 function delete_action($id)
 {
 	$post = delete_post($id);
+	header('Location: /index.php');
 }
 ?>
