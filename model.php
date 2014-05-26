@@ -88,5 +88,17 @@ function edit_post($id, $title, $content, $date)
 
 	close_database_connection($link);
 }
+function delete_post($id)
+{
+	$link = open_database_connection();
+	$id = intval($id);
+	$query = "DELETE 
+		FROM Post
+		WHERE id = '$id'";
+	$result = mysql_query($query);
+	
+	close_database_connection($link);
+}
+
 ?>
 

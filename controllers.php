@@ -39,4 +39,8 @@ function edit_action($id)
 		require 'templates/edit.php';
 	}
 }
+function delete_action($id)
+{
+	$post = delete_post($id);
+}
 ?>
