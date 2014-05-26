@@ -12,6 +12,7 @@ function show_action($id)
 }
 
 function add_action()
+{
 	if(isset($_POST['title']) && isset($_POST['content'])){
 		$input_title = $_POST['title'];
 		$input_content = $_POST['content'];
@@ -20,7 +21,7 @@ function add_action()
 		$location='Location: /index.php';
 		header($location);
 	}
-	require 'templates/add.php';
+	else{ require_once 'templates/add.php';}
 }
 
 ?>
