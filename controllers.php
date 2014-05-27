@@ -18,7 +18,7 @@ function add_action()
 		$input_content = $_POST['content'];
 		$input_date = Date('Y-m-d H:i:s');
 		$post = add_post($input_title, $input_content, $input_date);
-		$location='Location: /index.php';
+		$location='Location: /';
 		header($location);
 	}
 	else{ require_once 'templates/add.php';}
@@ -33,7 +33,7 @@ function edit_action($id)
 		$content = $_POST['content'];
 		$date = $post['date'];
 		$post = edit_post($id, $title, $content, $date);
-		header('Location: /index.php');
+		header('Location: /');
 	}
 	else{
 		require 'templates/edit.php';
@@ -42,6 +42,6 @@ function edit_action($id)
 function delete_action($id)
 {
 	$post = delete_post($id);
-	header('Location: /index.php');
+	header('Location: /');
 }
 ?>

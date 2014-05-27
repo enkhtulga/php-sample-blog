@@ -10,15 +10,15 @@ $uri = $_SERVER['REQUEST_URI'];
 $uri1 = explode("?", $uri);
 
 
-if('/index.php' == $uri){
+if('/' == $uri){
 	list_action();
-} elseif ('/index.php/show' == $uri1[0] && isset($_GET['id']) ){
+} elseif ('/show' == $uri1[0] && isset($_GET['id']) ){
 	show_action($_GET['id']);
-} elseif('/index.php/add' == $uri1[0]){
+} elseif('/add' == $uri1[0]){
 	add_action();
-} elseif('/index.php/edit' == $uri1[0] && isset($_GET['id'])){
+} elseif('/edit' == $uri1[0] && isset($_GET['id'])){
 	edit_action($_GET['id']);
-} elseif('/index.php/delete' == $uri1[0] && isset($_GET['id'])){
+} elseif('/delete' == $uri1[0] && isset($_GET['id'])){
 	delete_action($_GET['id']);
 }
   else {

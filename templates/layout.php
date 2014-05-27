@@ -22,8 +22,8 @@
     <div class="blog-masthead">
       <div class="container">
         <nav class="blog-nav">
-          <a class="blog-nav-item active" href="/index.php">Нүүр</a>
-          <a class="blog-nav-item" href="/index.php/add">Шинэ</a>
+          <a class="blog-nav-item active" href="/">Нүүр</a>
+          <a class="blog-nav-item" href="/add">Шинэ</a>
           <a class="blog-nav-item" href="#">Press</a>
           <a class="blog-nav-item" href="#">New hires</a>
           <a class="blog-nav-item" href="#">Тухай</a>
