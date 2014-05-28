@@ -3,102 +3,119 @@
 function open_database_connection()
 {
 	require 'local_settings.php';
-	$link = mysql_connect($db_host, $db_username, $db_password);
-	mysql_select_db($db_name, $link);
-	mysql_query("SET NAMES 'UTF8'", $link);
+	$link = mysqli_connect($db_host, $db_username, $db_password, $db_name);
+	mysqli_query($link, "SET NAMES 'UTF8'");
 	return $link;
 }
 
 function close_database_connection($link)
 {
-	mysql_close($link);
+	mysqli_close($link);
 }
 
-function get_all_post_by_newer()
+class Model
 {
-	$link = open_database_connection();
+	public $_id;
+	public $_title;
+	public $_content;
+	public $_date;
+	public $_author;
 	
-	$query = '
-		SELECT
-			Post.id as id,
-			Post.title,
-			Post.content,
-			Post.date,
-			Author.name
-		FROM Post
-		INNER JOIN Author
-		WHERE Post.author = Author.id
-		ORDER BY date DESC
-	';
-	$result = mysql_query($query, $link) or die(mysql_error());
+	static function getById($id)
+	{
+		$link = open_database_connection();
+		$id = intval($id);
+		$query = 'SELECT
+					Post.id As id,
+					Post.date AS date,
+					Post.title AS title,
+					Post.content AS content,
+					Author.name AS author
+				FROM Post INNER JOIN Author
+				ON Post.author = Author.id
+				WHERE Post.id = '.$id;
+		$result = mysqli_query($link, $query);
+		$className = get_called_class();
+		while($row = mysqli_fetch_assoc($result)){
+			$currentPost = new $className();
 
-	$posts = array();
-	while($row = mysql_fetch_assoc($result)){
-		$posts[] = $row;
+			$currentPost->_id = $row['id'];
+			$currentPost->_title = $row['title'];
+			$currentPost->_content = $row['content'];
+			$currentPost->_date = $row['date'];
+			$currentPost->_author = $row['author'];
+		}
+
+		close_database_connection($link);
+		return $currentPost;
 	}
+	static function getAll()
+	{
+		$link = open_database_connection();
+		$query = 'SELECT
+				Post.id as id,
+				Post.title as title,
+				Post.content as content,
+				Post.date as date,
+				Author.name as author
+			FROM Post INNER JOIN Author
+			WHERE Post.author = Author.id
+			ORDER BY date DESC';
+		$result = mysqli_query($link, $query) or die(mysql_error());
+		$className = get_called_class();
+		$obj_collection = array();
+
+		while($row = mysqli_fetch_assoc($result)){
+			$tableResult = new $className();
+			$tableResult->_id = $row['id'];
+			$tableResult->_title = $row['title'];
+			$tableResult->_content = $row['content'];
+			$tableResult->_date = $row['date'];
+			$obj_collection[] = $tableResult;
+		}
+		close_database_connection($link);
+		return $obj_collection;
+	}
+	public function save()
+	{
+		if($this->_id == ''){
+			$link = open_database_connection();
+			$query = "INSERT INTO Post
+				VALUES(NULL,
+					'$this->_title',
+					'$this->_content',
+					'$this->_date',
+					1)";
+			$result = mysqli_query($link, $query);
+			close_database_connection($link);
+		}
+		else{
+			$link = open_database_connection();
+			$id = intval($this->_id);
+			$query = "UPDATE Post
+					SET title = '$this->_title',
+					content = '$this->_content',
+					date = '$this->_date'
+				WHERE id = '$this->_id'";
+			$result = mysqli_query($link, $query);
 	
-	close_database_connection($link);
-
-	return $posts;
+			close_database_connection($link);
+		}
+	}
+	public function delete()
+	{
+		$id = intval($this->_id);
+		$link = open_database_connection();
+		$query = "DELETE
+			FROM Post
+			WHERE id = '$id'";
+		$result = mysqli_query($link, $query);
+		close_database_connection($link);
+	}
 }
 
-function get_post_by_id($id)
+class Post extends Model
 {
-	$link = open_database_connection();
-
-	$id = intval($id);
-	$query = 'SELECT
-				Post.id AS id,
-				Post.date AS date,
-				Post.title, 
-				Post.content, 
-				Author.name as author 
-			  FROM Post INNER JOIN Author
-			  ON Post.author = Author.id 
-			  WHERE Post.id ='.$id;
-
-	$result = mysql_query($query);
-	$row = mysql_fetch_assoc($result);
-
-	close_database_connection($link);
-	
-	return $row;
 }
-function add_post($input_title,	$input_content,	$input_date)
-{
-	$link = open_database_connection();
-	$query ="INSERT INTO Post
-		Values(NULL,
-			'$input_title',
-			'$input_content',
-			'$input_date',
-			1);";
-	$result = mysql_query($query);
-}
-function edit_post($id, $title, $content, $date)
-{
-	$link = open_database_connection();
-	$id = intval($id);
-	$query = "UPDATE Post
-			SET title = '$title',
-			content = '$content',
-			date = '$date'
-		WHERE id = $id";
-	$result = mysql_query($query);
-
-	close_database_connection($link);
-}
-function delete_post($id)
-{
-	$link = open_database_connection();
-	$id = intval($id);
-	$query = "DELETE
-		FROM Post
-		WHERE id = '$id'";
-	$result = mysql_query($query);
-
-	close_database_connection($link);
-}
-
 ?>
 

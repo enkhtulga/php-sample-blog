@@ -1,23 +1,24 @@
 <?php
 function list_action()
 {
-	$posts = get_all_post_by_newer();
+	$posts = Post::getAll();
 	require 'templates/list.php';
 }
 
 function show_action($id)
 {
-	$post = get_post_by_id($id);
+	$post = Post::getById($id);
 	require 'templates/show.php';
 }
 
 function add_action()
 {
 	if(isset($_POST['title']) && isset($_POST['content'])){
-		$input_title = $_POST['title'];
-		$input_content = $_POST['content'];
-		$input_date = Date('Y-m-d H:i:s');
-		$post = add_post($input_title, $input_content, $input_date);
+		$post = new Post();
+		$post->_title = $_POST['title'];
+		$post->_content = $_POST['content'];
+		$post->_date = Date('Y-m-d H:i:s');
+		$post->save();
 		$location='Location: /';
 		header($location);
 	}
@@ -26,13 +27,15 @@ function add_action()
 
 function edit_action($id)
 {
-	$post = get_post_by_id($id);
+	$post = Post::getById($id);
 	if(isset($_POST['title']) && isset($_POST['content']))
 	{
-		$title = $_POST['title'];
-		$content = $_POST['content'];
-		$date = $post['date'];
-		$post = edit_post($id, $title, $content, $date);
+		$post1 = new Post();
+		$post1->_id = $id;
+		$post1->_title = $_POST['title'];
+		$post1->_content = $_POST['content'];
+		$post1->_date = $post->_date;
+		$post1->save();
 		header('Location: /');
 	}
 	else{
@@ -41,7 +44,8 @@ function edit_action($id)
 }
 function delete_action($id)
 {
-	$post = delete_post($id);
+	$post = Post::getById($id);
+	$post->delete();
 	header('Location: /');
 }
 ?>

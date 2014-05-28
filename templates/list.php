@@ -4,8 +4,8 @@
 	<ul>
 		<?php foreach($posts as $post): ?>
 		<li>
-			<a href="/show?id=<?php echo $post['id'] ?>">
-				<?php echo $post['title']; ?>				
+			<a href="/show?id=<?php echo $post->_id; ?>">
+				<?php echo $post->_title; ?>
 			</a>
 		</li>
 		<?php endforeach ?>

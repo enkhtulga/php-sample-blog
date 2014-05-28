@@ -1,13 +1,13 @@
-<?php $title = $post['title'] ?>
+<?php $title = $post->_title; ?>
 
 <?php ob_start() ?>
 	
-	<p class="blog-post-meta"><?php echo $post['date'] ?> by <?php echo $post['author'] ?>
-		<a href="/edit?id=<?php echo $post['id'] ?>" class="btn btn-warning btn-sm">  Edit post</a>
-		<a href="/delete?id=<?php echo $post['id'] ?>" class="btn btn-danger btn-sm">  Delete post</a>
+	<p class="blog-post-meta"><?php echo $post->_date; ?> by <?php echo $post->_author; ?>
+		<a href="/edit?id=<?php echo $post->_id; ?>" class="btn btn-warning btn-sm">  Edit post</a>
+		<a href="/delete?id=<?php echo $post->_id; ?>" class="btn btn-danger btn-sm">  Delete post</a>
 	</p>
 	<div class ="body text-justify">
-		<?php echo $post['content'] ?>
+		<?php echo $post->_content; ?>
 	</div>
 <?php $content = ob_get_clean() ?>
 

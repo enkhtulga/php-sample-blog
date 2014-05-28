@@ -4,13 +4,13 @@
   <div class="form-group">
     <label for="updateTitle" class="col-sm-2 control-label" name='title'>Title</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="title" value = "<?php echo $post['title']?>">
+      <input type="text" class="form-control" name="title" value = "<?php echo $post->_title; ?>">
     </div>
   </div>
   <div class="form-group">
     <label for="updateContent" class="col-sm-2 control-label">Content</label>
     <div class="col-sm-10">
-      <textarea style="height: 250px;" class="form-control" row="3" name='content'><?php echo $post['content'] ?></textarea>
+      <textarea style="height: 250px;" class="form-control" row="3" name='content'><?php echo $post->_content; ?></textarea>
     </div>
   </div>
   <div class="form-group">
