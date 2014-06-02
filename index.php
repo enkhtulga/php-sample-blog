@@ -21,8 +21,8 @@ if('/' == $uri){
 } elseif('/delete' == $uri1[0] && isset($_GET['id'])){
 	delete_action($_GET['id']);
 } elseif('/test' == $uri1[0]){
-	//$post = new Post();
-	//$post->call();
+	//$post = Post::getById(37);
+	//$post->save();
 }
   else {
 	header('Status: 404 Not found');

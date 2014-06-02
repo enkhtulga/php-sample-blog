@@ -15,9 +15,12 @@ function add_action()
 {
 	if(isset($_POST['title']) && isset($_POST['content'])){
 		$post = new Post();
-		$post->_title = $_POST['title'];
-		$post->_content = $_POST['content'];
-		$post->_date = Date('Y-m-d H:i:s');
+		$post->id = "NULL";
+		$post->title = $_POST['title'];
+		$post->content = $_POST['content'];
+		$post->date = Date('Y-m-d H:i:s');
+		$post->author = 1;
+
 		$post->save();
 		$location='Location: /';
 		header($location);
@@ -31,10 +34,11 @@ function edit_action($id)
 	if(isset($_POST['title']) && isset($_POST['content']))
 	{
 		$post1 = new Post();
-		$post1->_id = $id;
-		$post1->_title = $_POST['title'];
-		$post1->_content = $_POST['content'];
-		$post1->_date = $post->_date;
+		$post1->id = intval($id);
+		$post1->title = $_POST['title'];
+		$post1->content = $_POST['content'];
+		$post1->date = $post->date;
+		$post1->author = 1;
 		$post1->save();
 		header('Location: /');
 	}
