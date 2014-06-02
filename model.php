@@ -24,11 +24,11 @@ class Model
 		$sql = sprintf($query, $strFields, static::$table);
 		$result = mysqli_query($link, $sql);
 		$className = get_called_class();
-		while($row = mysqli_fetch_assoc($result)){
-			$obj = new $className();
-			foreach(static::$fields as $field)
-				$obj->$field = $row[$field];
-		}
+		$row = mysqli_fetch_assoc($result);
+		$obj = new $className();
+		foreach(static::$fields as $field)
+			$obj->$field = $row[$field];
+		
 		close_database_connection($link);
 		return $obj;
 	}
@@ -43,8 +43,8 @@ class Model
 		$obj_collection = array();
 		while($row = mysqli_fetch_assoc($result)){
 			$tableResult = new $className();
-			foreach($tableResult as $i=>$field)
-				$tableResult->$i = $row[$i];
+			foreach(static::$fields as $field)
+				$tableResult->$field = $row[$field];
 			$obj_collection[] = $tableResult;
 		}
 		close_database_connection($link);
@@ -101,8 +101,5 @@ class Post extends Model
 	
 	static $fields = array('id', 'title', 'content', 'date', 'author');
 	static $table = 'Post';
-}
-class Author extends Model
-{
 }
 ?>
