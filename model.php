@@ -15,25 +15,13 @@ function close_database_connection($link)
 
 class Model
 {
-	public $_id;
-	public $_title;
-	public $_content;
-	public $_date;
-	public $_author;
-	
 	static function getById($id)
 	{
 		$link = open_database_connection();
 		$id = intval($id);
-		$query = 'SELECT
-					Post.id As id,
-					Post.date AS date,
-					Post.title AS title,
-					Post.content AS content,
-					Author.name AS author
-				FROM Post INNER JOIN Author
-				ON Post.author = Author.id
-				WHERE Post.id = '.$id;
+		$query = 'SELECT id, date, title, content
+			FROM Post 
+			WHERE id = '.$id;
 		$result = mysqli_query($link, $query);
 		$className = get_called_class();
 		while($row = mysqli_fetch_assoc($result)){
@@ -43,7 +31,6 @@ class Model
 			$currentPost->_title = $row['title'];
 			$currentPost->_content = $row['content'];
 			$currentPost->_date = $row['date'];
-			$currentPost->_author = $row['author'];
 		}
 
 		close_database_connection($link);
@@ -51,28 +38,23 @@ class Model
 	}
 	static function getAll()
 	{
+		$strFields='';
 		$link = open_database_connection();
-		$query = 'SELECT
-				Post.id as id,
-				Post.title as title,
-				Post.content as content,
-				Post.date as date,
-				Author.name as author
-			FROM Post INNER JOIN Author
-			WHERE Post.author = Author.id
-			ORDER BY date DESC';
-		$result = mysqli_query($link, $query) or die(mysql_error());
+
+		$strFields = implode(',', static::$fields);
+		
+		$query = "SELECT %s FROM %s ORDER BY date DESC";
+		$sql = sprintf($query, $strFields, static::$table);
+
+		$result = mysqli_query($link, $sql) or die(mysql_error());
 		$className = get_called_class();
 		$obj_collection = array();
-
 		while($row = mysqli_fetch_assoc($result)){
 			$tableResult = new $className();
-			$tableResult->_id = $row['id'];
-			$tableResult->_title = $row['title'];
-			$tableResult->_content = $row['content'];
-			$tableResult->_date = $row['date'];
+			foreach($tableResult as $i=>$field)
+				$tableResult->$i = $row[$i];
 			$obj_collection[] = $tableResult;
-		}
+		}		
 		close_database_connection($link);
 		return $obj_collection;
 	}
@@ -116,6 +98,17 @@ class Model
 
 class Post extends Model
 {
+	public $id;
+	public $title;
+	public $content;
+	public $date;
+	
+	static $fields = array('id', 'title', 'content', 'date');
+	function call(){
+		foreach(static::$fields as $key => $value){
+			echo "Key: $key; Value: $value\n";
+		}
+	}	
+	static $table = 'Post';
 }
 ?>
-

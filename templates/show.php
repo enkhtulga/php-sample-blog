@@ -2,7 +2,7 @@
 
 <?php ob_start() ?>
 	
-	<p class="blog-post-meta"><?php echo $post->_date; ?> by <?php echo $post->_author; ?>
+	<p class="blog-post-meta"><?php echo $post->_date; ?> by 
 		<a href="/edit?id=<?php echo $post->_id; ?>" class="btn btn-warning btn-sm">  Edit post</a>
 		<a href="/delete?id=<?php echo $post->_id; ?>" class="btn btn-danger btn-sm">  Delete post</a>
 	</p>
