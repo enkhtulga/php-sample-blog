@@ -20,13 +20,9 @@ if('/' == $uri){
 	edit_action($_GET['id']);
 } elseif('/delete' == $uri1[0] && isset($_GET['id'])){
 	delete_action($_GET['id']);
-} elseif('/test' == $uri1[0]){
-	//$post = Post::getById(37);
-	//$post->save();
-}
-  else {
+} else {
 	header('Status: 404 Not found');
-	echo '<html><body><h1>Page Not Found1</h1></body></html>';
+	echo '<html><body><h1>Page Not Found</h1></body></html>';
 }
 
 ?>

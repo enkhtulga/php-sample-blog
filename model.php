@@ -17,7 +17,6 @@ class Model
 {
 	static function getById($id)
 	{
-		$strFields ='';
 		$link = open_database_connection();
 		$id = intval($id);
 		$strFields = implode(',', static::$fields);
@@ -26,16 +25,15 @@ class Model
 		$result = mysqli_query($link, $sql);
 		$className = get_called_class();
 		while($row = mysqli_fetch_assoc($result)){
-			$currentPost = new $className();
-			foreach($currentPost as $i=>$field)
-				$currentPost->$i = $row[$i];
+			$presentPost = new $className();
+			foreach(static::$fields as $field)
+				$presentPost->$field = $row[$field];
 		}
 		close_database_connection($link);
-		return $currentPost;
+		return $presentPost;
 	}
 	static function getAll()
 	{
-		$strFields='';
 		$link = open_database_connection();
 		$strFields = implode(',', static::$fields);
 		$query = "SELECT %s FROM %s ORDER BY date DESC";
@@ -54,38 +52,40 @@ class Model
 	}
 	public function save()
 	{
+		$link = open_database_connection();
 		if($this->id == ''){
-			$strFields = '';
-			$link = open_database_connection();
-			$strFields = implode(',', static::$fields1);
-			$query = "INSERT INTO %s VALUES(%s)";
-			$sql = sprintf($query, static::$table, $strFields);
-			var_dump($sql);
+			$strValues = '';
+			foreach(static::$fields as $field)
+				$strValues .= '"'.$this->$field.'",';
+			$strFields = implode(',', static::$fields);
+			$strValues = substr($strValues, 0, strlen($strValues)-1);
+			$query = "INSERT INTO %s (%s)
+					VALUES(%s)";
+			$sql = sprintf($query, static::$table, $strFields, $strValues);
 			$result = mysqli_query($link, $sql);
-			close_database_connection($link);
 		}
 		else{
-			$link = open_database_connection();
-			$id = intval($this->_id);
-			$query = "UPDATE Post
-					SET title = '$this->_title',
-					content = '$this->_content',
-					date = '$this->_date'
-				WHERE id = '$this->_id'";
-			$result = mysqli_query($link, $query);
+			$col = '';
+			foreach(static::$fields as $field)
+				$col .= $field.'="'.$this->$field.'",';
+			$col = substr($col, 0, strlen($col)-1);
+			$query = "UPDATE %s
+					SET %s
+				WHERE id = $this->id";
+			$sql = sprintf($query, static::$table, $col);
+			$result = mysqli_query($link, $sql);
 	
-			close_database_connection($link);
 		}
+		close_database_connection($link);
 	}
 	public function delete()
 	{
-		$id = intval($this->id);
 		$link = open_database_connection();
+		$id = intval($this->id);
 		$query = "DELETE
 			FROM %s
 			WHERE id = '$id'";
 		$sql = sprintf($query, static::$table);
-	
 		$result = mysqli_query($link, $sql);
 		close_database_connection($link);
 	}
@@ -101,5 +101,8 @@ class Post extends Model
 	
 	static $fields = array('id', 'title', 'content', 'date', 'author');
 	static $table = 'Post';
+}
+class Author extends Model
+{
 }
 ?>

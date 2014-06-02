@@ -15,7 +15,6 @@ function add_action()
 {
 	if(isset($_POST['title']) && isset($_POST['content'])){
 		$post = new Post();
-		$post->id = "NULL";
 		$post->title = $_POST['title'];
 		$post->content = $_POST['content'];
 		$post->date = Date('Y-m-d H:i:s');
@@ -33,13 +32,12 @@ function edit_action($id)
 	$post = Post::getById($id);
 	if(isset($_POST['title']) && isset($_POST['content']))
 	{
-		$post1 = new Post();
-		$post1->id = intval($id);
-		$post1->title = $_POST['title'];
-		$post1->content = $_POST['content'];
-		$post1->date = $post->date;
-		$post1->author = 1;
-		$post1->save();
+		$post->id = intval($id);
+		$post->title = $_POST['title'];
+		$post->content = $_POST['content'];
+		$post->date = $post->date;
+		$post->author = 1;
+		$post->save();
 		header('Location: /');
 	}
 	else{
