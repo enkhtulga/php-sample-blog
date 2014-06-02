@@ -25,12 +25,12 @@ class Model
 		$result = mysqli_query($link, $sql);
 		$className = get_called_class();
 		while($row = mysqli_fetch_assoc($result)){
-			$presentPost = new $className();
+			$obj = new $className();
 			foreach(static::$fields as $field)
-				$presentPost->$field = $row[$field];
+				$obj->$field = $row[$field];
 		}
 		close_database_connection($link);
-		return $presentPost;
+		return $obj;
 	}
 	static function getAll()
 	{
