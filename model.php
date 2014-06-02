@@ -21,10 +21,8 @@ class Model
 		$link = open_database_connection();
 		$id = intval($id);
 		$strFields = implode(',', static::$fields);
-		
 		$query = "SELECT %s FROM %s WHERE id=$id";
 		$sql = sprintf($query, $strFields, static::$table);
-		
 		$result = mysqli_query($link, $sql);
 		$className = get_called_class();
 		while($row = mysqli_fetch_assoc($result)){
@@ -40,10 +38,8 @@ class Model
 		$strFields='';
 		$link = open_database_connection();
 		$strFields = implode(',', static::$fields);
-		
 		$query = "SELECT %s FROM %s ORDER BY date DESC";
 		$sql = sprintf($query, $strFields, static::$table);
-		
 		$result = mysqli_query($link, $sql) or die(mysql_error());
 		$className = get_called_class();
 		$obj_collection = array();
@@ -52,41 +48,31 @@ class Model
 			foreach($tableResult as $i=>$field)
 				$tableResult->$i = $row[$i];
 			$obj_collection[] = $tableResult;
-		}		
+		}
 		close_database_connection($link);
 		return $obj_collection;
 	}
 	public function save()
 	{
-		if($this->id == "NULL"){
+		if($this->id == ''){
 			$strFields = '';
-			$strValues = '';
-			
 			$link = open_database_connection();
-			foreach(static::$fields as $key=>$field){
-				$strValues .= '"'.$this->$field.'",';
-			}
-			$strFields = implode(',',static::$fields);
-			$strValues = substr($strValues, 0, strlen($strValues)-1);	
-			$query = "INSERT INTO %s (%s)
-					VALUES(%s)";
-			$sql = sprintf($query, static::$table, $strFields, $strValues);
+			$strFields = implode(',', static::$fields1);
+			$query = "INSERT INTO %s VALUES(%s)";
+			$sql = sprintf($query, static::$table, $strFields);
+			var_dump($sql);
 			$result = mysqli_query($link, $sql);
 			close_database_connection($link);
 		}
 		else{
-			$col = '';
-			
 			$link = open_database_connection();
-			foreach(static::$fields as $key=>$field)
-				$col .= $field.'="'.$this->$field.'",';
-			
-			$col = substr($col,0,strlen($col)-1);
-			$query = "UPDATE %s
-					SET %s
-				WHERE id = $this->id";
-			$sql = sprintf($query, static::$table, $col);
-			$result = mysqli_query($link, $sql);
+			$id = intval($this->_id);
+			$query = "UPDATE Post
+					SET title = '$this->_title',
+					content = '$this->_content',
+					date = '$this->_date'
+				WHERE id = '$this->_id'";
+			$result = mysqli_query($link, $query);
 	
 			close_database_connection($link);
 		}
@@ -115,9 +101,5 @@ class Post extends Model
 	
 	static $fields = array('id', 'title', 'content', 'date', 'author');
 	static $table = 'Post';
-}
-class Author extends Model
-{
-	
 }
 ?>
