@@ -32,6 +32,21 @@ class Model
 		close_database_connection($link);
 		return $obj;
 	}
+	static function getByName($name)
+	{
+		$link = open_database_connection();
+		$name = '"'.$name.'"';
+		$query = "SELECT %s,%s FROM %s WHERE %s=%s";
+		$sql = sprintf($query, static::$uname, static::$pass, static::$table, static::$uname, $name);
+		$result = mysqli_query($link, $sql);
+		$className = get_called_class();
+		$row = mysqli_fetch_assoc($result);
+		$obj = new $className();
+		foreach(static::$fields as $field)
+			$obj->$field = $row[$field];
+		close_database_connection($link);
+		return $obj;
+	}
 	static function getAll()
 	{
 		$link = open_database_connection();
@@ -111,6 +126,8 @@ class Author extends Model
 	public $password;
 
 	static $fields = array('id', 'name', 'phone', 'username', 'password');
+	static $uname = 'username';
+	static $pass = 'password';
 	static $table = 'Author';
 }
 ?>

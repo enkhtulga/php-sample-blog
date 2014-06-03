@@ -53,19 +53,16 @@ function delete_action($id)
 
 function author_login()
 {
-	$authors = Author::getAll();
 	if(isset($_POST['username']) && isset($_POST['password']))
 	{
-		foreach($authors as $author)
-		{
-			if($author->username == $_POST['username'] && $author->password == $_POST['password']){
-				$_SESSION['currentUser'] = $author->username;
-				$_SESSION['userId'] = $author->id;
-				header('Location: /');
-			}
-			else{
-				header('Location: /author/login');
-			}
+		$author = Author::getByName($_POST['username']);
+		if($author->password == $_POST['password']){
+			$_SESSION['currentUser'] = $author->username;
+			$_SESSION['userId'] = $author->id;
+			header('Location: /');
+		}
+		else{
+			header('Location: /author/login');
 		}
 	}
 	else{
