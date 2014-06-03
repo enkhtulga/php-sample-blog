@@ -14,7 +14,12 @@ SET `username` = 'A', `password` = 'B'
 WHERE `Author`.`id` = C;
 
 
---3. Finally, You need to add 'UNIQUE' for Author's username.
+--3. You need to add 'UNIQUE' for Author's username.
 -- It means that username is unique. There are no one else like your name.
 ALTER TABLE  `Author`
 ADD UNIQUE (`username`);
+
+
+--4. Finally, execute below query for renaming post.author into post.author_id.
+ALTER TABLE  `Post`
+CHANGE  `author`  `author_id` INT( 11 ) NOT NULL ;
