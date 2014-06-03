@@ -4,16 +4,16 @@
 <table class="table table-hover">
 <thead>
 	<tr>
-          	<th>Author name</th>
-          	<th>Phone</th>
-          	<th>Username</th>
+		<th>Author name</th>
+		<th>Phone</th>
+		<th>Username</th>
 		<th>Password</th>
 		<th>Actions</th>
-        </tr>
+	</tr>
 </thead>
 <?php foreach($authors as $author){ ?>
 	<tbody>
-        	<tr>
+		<tr>
 			<td><?php echo $author->name ?></td>
 			<td><?php echo $author->phone ?></td>
 			<td><?php echo $author->username ?></td>
@@ -21,10 +21,10 @@
 			<td>
 				<a class="btn btn-primary btn-xs" href="/author/edit?id=<?php echo $author->id; ?>">Edit</a>
 				<a class="btn btn-danger btn-xs" href="/author/delete?id=<?php echo $author->id ?>">Delete</a>
-			</td> 
-        	</tr>
+			</td>
+		</tr>
 	</tbody>
-<?php } ?> 
+<?php } ?>
 </table>
 <?php $content = ob_get_clean() ?>
 <?php include 'layout.php' ?>

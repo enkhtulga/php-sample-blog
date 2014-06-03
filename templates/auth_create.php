@@ -20,7 +20,6 @@
 			<input type="text" class="form-control" row="3" name ='username' placeholder="Write username"></textarea>
 		</div>
 	</div>
-	
 	<div class="form-group">
 		<label for="password" class="col-sm-2 control-label">Password:</label>
 		<div class="col-sm-10">
