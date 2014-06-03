@@ -2,9 +2,9 @@
 
 <?php ob_start() ?>
 	
-	<p class="blog-post-meta"><?php echo $post->date; ?> by
-		<a href="/edit?id=<?php echo $post->id; ?>" class="btn btn-warning btn-sm">  Edit post</a>
-		<a href="/delete?id=<?php echo $post->id; ?>" class="btn btn-danger btn-sm">  Delete post</a>
+	<p class="blog-post-meta"><?php echo $post->date; ?> by <?php echo $author->name; ?>
+		<a href="/edit?id=<?php echo $post->id; ?>" class="btn btn-warning btn-xs">  Edit post</a>
+		<a href="/delete?id=<?php echo $post->id; ?>" class="btn btn-danger btn-xs">  Delete post</a>
 	</p>
 	<div class ="body text-justify">
 		<?php echo $post->content; ?>

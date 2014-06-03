@@ -36,7 +36,7 @@ class Model
 	{
 		$link = open_database_connection();
 		$strFields = implode(',', static::$fields);
-		$query = "SELECT %s FROM %s ORDER BY date DESC";
+		$query = "SELECT %s FROM %s";
 		$sql = sprintf($query, $strFields, static::$table);
 		$result = mysqli_query($link, $sql) or die(mysql_error());
 		$className = get_called_class();
@@ -101,5 +101,16 @@ class Post extends Model
 	
 	static $fields = array('id', 'title', 'content', 'date', 'author');
 	static $table = 'Post';
+}
+class Author extends Model
+{
+	public $id;
+	public $name;
+	public $phone;
+	public $username;
+	public $password;
+
+	static $fields = array('id', 'name', 'phone', 'username', 'password');
+	static $table = 'Author';
 }
 ?>

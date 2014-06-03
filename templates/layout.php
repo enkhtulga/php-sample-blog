@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-
-
 <html lang="en">
 
   <head>
@@ -22,11 +20,16 @@
     <div class="blog-masthead">
       <div class="container">
         <nav class="blog-nav">
-          <a class="blog-nav-item active" href="/">Нүүр</a>
-          <a class="blog-nav-item" href="/add">Шинэ</a>
-          <a class="blog-nav-item" href="#">Press</a>
-          <a class="blog-nav-item" href="#">New hires</a>
-          <a class="blog-nav-item" href="#">Тухай</a>
+          <a class="blog-nav-item active" href="/">Home</a>
+		<?php if(isset($_SESSION['currentUser'])){ ?>
+			<a class="blog-nav-item" href="/add">New post</a>
+			<a class="blog-nav-item" href="/author/create">Create author</a>
+			<a class="blog-nav-item" href="/author/list">Authors</a>
+			<p class="blog-nav-item"><?php echo "Welcome,".$_SESSION['currentUser'] ?></p>
+			<a class="blog-nav-item" href="/author/logout?cond=1">Logout</a>
+	<?php } else { ?>
+			<a class="blog-nav-item" href="/author/login">Login</a>
+	<?php } ?>
         </nav>
       </div>
     </div>

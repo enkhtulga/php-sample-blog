@@ -1,5 +1,5 @@
+<?php session_start(); ?>
 <?php
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -20,7 +20,19 @@ if('/' == $uri){
 	edit_action($_GET['id']);
 } elseif('/delete' == $uri1[0] && isset($_GET['id'])){
 	delete_action($_GET['id']);
-} else {
+} elseif('/author/login' == $uri1[0]){
+	author_login();
+} elseif('/author/logout' == $uri1[0]){
+	author_logout();
+} elseif('/author/create' == $uri1[0]){
+	author_create();
+} elseif('/author/list' == $uri1[0]){
+	author_list();
+} elseif('/author/delete' == $uri1[0] && isset($_GET['id'])){
+	author_delete($_GET['id']);
+} elseif('/author/edit' == $uri1[0] && isset($_GET['id'])){
+	author_edit($_GET['id']);
+}else {
 	header('Status: 404 Not found');
 	echo '<html><body><h1>Page Not Found</h1></body></html>';
 }
