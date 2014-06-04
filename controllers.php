@@ -7,8 +7,10 @@ function list_action()
 
 function show_action($id)
 {
-	$post = Post::getById($id);
-	$author = Author::getById($post->author);
+	$getPostId = array('id'=>$id);
+	$post = Post::getBy($getPostId);
+	$getAuthorId = array('id'=>$post->author_id);
+	$author = Author::getBy($getAuthorId);
 	require 'templates/show.php';
 }
 
@@ -19,7 +21,7 @@ function add_action()
 		$post->title = $_POST['title'];
 		$post->content = $_POST['content'];
 		$post->date = Date('Y-m-d H:i:s');
-		$post->author = $_SESSION['userId'];
+		$post->author_id = $_SESSION['userId'];
 		$post->save();
 		$location='Location: /';
 		header($location);
@@ -29,14 +31,15 @@ function add_action()
 
 function edit_action($id)
 {
-	$post = Post::getById($id);
+	$getPostId = array('id'=>$id);
+	$post = Post::getBy($getPostId);
 	if(isset($_POST['title']) && isset($_POST['content']))
 	{
 		$post->id = intval($id);
 		$post->title = $_POST['title'];
 		$post->content = $_POST['content'];
 		$post->date = $post->date;
-		$post->author = $_SESSION['userId'];
+		$post->author_id = $_SESSION['userId'];
 		$post->save();
 		header('Location: /');
 	}
@@ -46,7 +49,8 @@ function edit_action($id)
 }
 function delete_action($id)
 {
-	$post = Post::getById($id);
+	$getPostId = array('id'=>$id);
+	$post = Post::getBy($getPostId);
 	$post->delete();
 	header('Location: /');
 }
@@ -55,19 +59,16 @@ function author_login()
 {
 	if(isset($_POST['username']) && isset($_POST['password']))
 	{
-		$author = Author::getByName($_POST['username']);
+		$getAuthorName = array('username'=>$_POST['username']);
+		$author = Author::getBy($getAuthorName);
 		if($author->password == $_POST['password']){
 			$_SESSION['currentUser'] = $author->username;
 			$_SESSION['userId'] = $author->id;
 			header('Location: /');
 		}
-		else{
-			header('Location: /author/login');
-		}
+		else header('Location: /author/login');
 	}
-	else{
-		require 'templates/login.php';
-	}
+	else require 'templates/login.php';
 }
 function author_logout()
 {
@@ -86,9 +87,7 @@ function author_create()
 		$author->save();
 		header('Location: /');
 	}
-	else{
-		require 'templates/auth_create.php';
-	}
+	else require 'templates/auth_create.php';
 }
 function author_list()
 {
@@ -97,13 +96,15 @@ function author_list()
 }
 function author_delete($id)
 {
-	$author = Author::getById($id);
+	$getAuthorId = array('id'=>$id);
+	$author = Author::getBy($getAuthorId);
 	$author->delete();
 	header('Location: /author/list');
 }
 function author_edit($id)
 {
-	$author = Author::getById($id);
+	$getAuthorId = array('id'=>$id);
+	$author = Author::getBy($getAuthorId);
 	if(isset($_POST['name']) && isset($_POST['username']) && isset($_POST['password'])){
 		$author->id = intval($id);
 		$author->name = $_POST['name'];
@@ -112,8 +113,6 @@ function author_edit($id)
 		$author->password = $_POST['password'];
 		$author->save();
 		header('Location: /author/list');
-	}else {
-		require 'templates/auth_edit.php';
-	}
+	}else require 'templates/auth_edit.php';
 }
 ?>

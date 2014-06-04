@@ -25,6 +25,7 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `Author`
 --
+SET @database = 'Sample_blog';
 
 CREATE TABLE IF NOT EXISTS `Author` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

@@ -15,33 +15,21 @@ function close_database_connection($link)
 
 class Model
 {
-	static function getById($id)
+	static function getBy($inputValues)
 	{
 		$link = open_database_connection();
-		$id = intval($id);
-		$strFields = implode(',', static::$fields);
-		$query = "SELECT %s FROM %s WHERE id=$id";
-		$sql = sprintf($query, $strFields, static::$table);
-		$result = mysqli_query($link, $sql);
+		$col = '';
+		$strFields = implode(',',static::$fields);
+		foreach($inputValues as $i=>$value){
+			$col .=static::$fields[$i].'="'.$value.'" AND ';
+		}
+		$col = substr($col, 0, strlen($col)-5);
+		$query = "SELECT %s FROM %s WHERE %s";
+		$sql = sprintf($query, $strFields, static::$table, $col);
+		$result = mysqli_query($link, $sql) or die(mysql_error());
 		$className = get_called_class();
 		$row = mysqli_fetch_assoc($result);
-		$obj = new $className();
-		foreach(static::$fields as $field)
-			$obj->$field = $row[$field];
-		
-		close_database_connection($link);
-		return $obj;
-	}
-	static function getByName($name)
-	{
-		$link = open_database_connection();
-		$name = '"'.$name.'"';
-		$query = "SELECT %s,%s FROM %s WHERE %s=%s";
-		$sql = sprintf($query, static::$uname, static::$pass, static::$table, static::$uname, $name);
-		$result = mysqli_query($link, $sql);
-		$className = get_called_class();
-		$row = mysqli_fetch_assoc($result);
-		$obj = new $className();
+		$obj = new $className;
 		foreach(static::$fields as $field)
 			$obj->$field = $row[$field];
 		close_database_connection($link);
@@ -112,9 +100,15 @@ class Post extends Model
 	public $title;
 	public $content;
 	public $date;
-	public $author;
+	public $author_id;
 	
-	static $fields = array('id', 'title', 'content', 'date', 'author');
+	static $fields = array(
+				'id'=>'id',
+				'title'=>'title',
+				'content'=>'content',
+				'date'=>'date',
+				'author_id'=>'author_id',
+				);
 	static $table = 'Post';
 }
 class Author extends Model
@@ -125,9 +119,13 @@ class Author extends Model
 	public $username;
 	public $password;
 
-	static $fields = array('id', 'name', 'phone', 'username', 'password');
-	static $uname = 'username';
-	static $pass = 'password';
+	static $fields = array(
+				'id'=>'id',
+				'name'=>'name',
+				'phone'=>'phone',
+				'username'=>'username',
+				'password'=>'password',
+				);
 	static $table = 'Author';
 }
 ?>

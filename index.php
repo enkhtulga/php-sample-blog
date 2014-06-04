@@ -1,5 +1,6 @@
-<?php session_start(); ?>
 <?php
+session_start();
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -9,12 +10,14 @@ require_once 'controllers.php';
 $uri = $_SERVER['REQUEST_URI'];
 $uri1 = explode("?", $uri);
 
+if('/' == $uri){
+	list_action();
+} elseif('/show' == $uri1[0] && isset($_GET['id'])){
+	show_action($_GET['id']);
+}
+
 if(isset($_SESSION['currentUser'])){
-	if('/' == $uri){
-		list_action();
-	} elseif('/show' == $uri1[0] && isset($_GET['id'])){
-		show_action($_GET['id']);
-	} elseif('/add' == $uri1[0]){
+	if('/add' == $uri1[0]){
 		add_action();
 	} elseif('/edit' == $uri1[0] && isset($_GET['id'])){
 		edit_action($_GET['id']);
@@ -36,14 +39,8 @@ if(isset($_SESSION['currentUser'])){
 	}
 }
 else {
-	if('/' == $uri){
-		list_action();
-	} elseif ('/show' == $uri1[0] && isset($_GET['id'])){
-		show_action($_GET['id']);
-	} elseif('/author/login' == $uri1[0]){
+	if('/author/login' == $uri1[0]){
 		author_login();
-	} else {
-		echo '<html><body><h3>No permission to access this link.Please login <a href="/author/login">here</a></h3></body></html>';
-	}
+	} else echo '<html><body><h3>No permission to access this link.Please login <a href="/author/login">here</a></h3></body></html>';
 }
 ?>
