@@ -1,15 +1,7 @@
--- phpMyAdmin SQL Dump
--- version 4.0.10deb1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: May 21, 2014 at 09:08 AM
--- Server version: 5.5.37-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
+SET @database = 'Sample_blog';
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,7 +17,7 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `Author`
 --
-SET @database = 'Sample_blog';
+
 
 CREATE TABLE IF NOT EXISTS `Author` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
