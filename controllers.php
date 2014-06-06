@@ -85,7 +85,7 @@ function author_create()
 		$author->username = $_POST['username'];
 		$author->password = $_POST['password'];
 		$author->save();
-		header('Location: /');
+		header('Location: /author/list');
 	}
 	else require 'templates/auth_create.php';
 }
