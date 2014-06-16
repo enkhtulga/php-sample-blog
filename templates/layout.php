@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,25 +12,30 @@
 
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/blog.css" rel="stylesheet">
-  </head>
+</head>
 
-  <body>
-
+<body>
     <div class="blog-masthead">
-      <div class="container">
-        <nav class="blog-nav">
-          <a class="blog-nav-item active" href="/">Home</a>
-		<?php if(isset($_SESSION['currentUser'])){ ?>
-			<a class="blog-nav-item" href="/add">New post</a>
-			<a class="blog-nav-item" href="/author/create">Create author</a>
-			<a class="blog-nav-item" href="/author/list">Authors</a>
-			<p class="blog-nav-item"><?php echo "Welcome,".$_SESSION['currentUser'] ?></p>
-			<a class="blog-nav-item" href="/author/logout?cond=1">Logout</a>
-	<?php } else { ?>
-			<a class="blog-nav-item" href="/author/login">Login</a>
-	<?php } ?>
-        </nav>
-      </div>
+        <div class="container">
+            <nav class="blog-nav">
+                <a class="blog-nav-item active" href="/">Home</a>
+		        <?php if(isset($_COOKIE['userId'])){ ?>
+			        <a class="blog-nav-item" href="/post/add">New post</a>
+			        <a class="blog-nav-item" href="/author/create">Create author</a>
+                    <a class="blog-nav-item" href="/author/list">Authors</a>
+                    <p class="blog-nav-item"><?php echo "Welcome,".$_COOKIE['userName'] ?></p>
+                    <a class="blog-nav-item" href="/author/logout?cond=1">Logout</a>
+                <?php } else { ?>
+                        <a class="blog-nav-item" href="/author/login">Login</a>
+                <?php } ?>
+                <form class="nav-form navbar-right" role="search">
+                    <div class="form-group" style="display: inline-block; margin-top: 5px;">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Search</button>
+                </form>
+            </nav>
+        </div>
     </div>
 
     <div class="container">
@@ -47,18 +51,12 @@
 
           <div class="blog-post">
             <h2 class="blog-post-title"><?php echo $title ?></h2>
-            
+
 
             <p><?php echo $content ?></p>
-            
+
           </div><!-- /.blog-post -->
 
-          
-
-          <ul class="pager">
-            <li><a href="#">Previous</a></li>
-            <li><a href="#">Next</a></li>
-          </ul>
 
         </div><!-- /.blog-main -->
 
