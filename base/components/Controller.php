@@ -1,8 +1,7 @@
 <?php
 namespace base\components;
-// use base\components\traits\AccessControl;
+use base\components\traits\AccessControl;
 use ats\Misc;
-require 'base/components/traits/AccessControl.php';
 /**
  * Class Controller base class for all controllers
  * @package \base\components
@@ -10,8 +9,7 @@ require 'base/components/traits/AccessControl.php';
 class Controller {
 
     /** Controller has AccessControl trait */
-    //use AccessControl;
-    use \base\components\traits\AccessControl;
+    use AccessControl;
 
     /* @var string id of this controller */
     public $id;

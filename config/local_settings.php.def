@@ -1,0 +1,13 @@
+<?php
+$domain = isset($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : 'localhost';
+
+return [
+    'db'=> [
+        'host'=>'',
+        'user'=>'', //username for database
+        'password'=>'', //password for database
+        'database'=>'', //database name
+    ],
+    'siteURL'=> $domain.'/',
+];
+?>

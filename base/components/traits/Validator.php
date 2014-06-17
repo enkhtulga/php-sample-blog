@@ -1,6 +1,6 @@
 <?php
 namespace base\components\traits;
-//use base\components\App;
+use base\components\App;
 /**
  * Class Validator
  *

@@ -7,9 +7,9 @@ return [
     'staticUrl'=> 'assets/',
     'baseUrl'=> '/',
     'include'=>[
-        'base/components/*',
         'controllers.php',
-        'model.php'
+        'models/*',
+        'models/forms/*'
     ]
 ];
 ?>

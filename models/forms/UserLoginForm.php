@@ -1,6 +1,8 @@
 <?php
+use base\components\Form;
+use models\model;
 
-class UserLoginForm extends base\components\Form
+class UserLoginForm extends Form
 {
     public $username;
     public $password;

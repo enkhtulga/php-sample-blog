@@ -1,20 +1,10 @@
-<?PHP
-require 'base/components/Model.php';
-require 'base/components/CacheProvider.php';
-require 'base/components/Cache.php';
+<?php
+use base\components\Model;
+use base\components\CacheProvider;
 
-//require 'config/local_settings.php';
-//$link = mysqli_connect($db_host, $db_username, $db_password, $db_name);
-//mysqli_query($link, "SET NAMES 'UTF8'");
+CacheProvider::init([]);
 
-base\components\CacheProvider::init([]);
-
-function close_database_connection($link)
-{
-	mysqli_close($link);
-}
-
-class Post extends base\components\Model
+class Post extends Model
 {
 	static protected $_table = 'Post';
 	static protected $_fields = array(
@@ -40,9 +30,8 @@ class Post extends base\components\Model
         ),
     );
 }
-//Post::setConnection($link);
 
-class Author extends base\components\Model
+class Author extends Model
 {
 	static protected $_table = 'Author';
 	static protected $_fields = array(
@@ -85,9 +74,7 @@ class Author extends base\components\Model
     }
 
     public function checkSessionKey($key, $additionalParams = '') {
-        //var_dump(password_verify($this->toString() . $additionalParams, $key)); die();
         return password_verify($this->toString() . $additionalParams, $key);
     }
-
 }
 ?>

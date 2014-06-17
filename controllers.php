@@ -1,9 +1,10 @@
 <?php
-require 'base/components/Controller.php';
-require 'base/components/Form.php';
-require 'models/forms/UserLoginForm.php';
+use base\components\Controller;
+use base\components\App;
+use UserLoginForm as ULF;
+use base\components\UserIdentity;
 
-class PostController extends base\components\Controller
+class PostController extends Controller
 {
     protected function accessRules()
     {
@@ -38,7 +39,7 @@ class PostController extends base\components\Controller
             $post->title = $_POST['title'];
             $post->content = $_POST['content'];
             $post->date = Date('Y-m-d H:i:s');
-            $post->author_id = $_SESSION['userId'];
+            $post->author_id = $_COOKIE['userId'];
             $post->save();
             $location='Location: /';
             header($location);
@@ -72,7 +73,7 @@ class PostController extends base\components\Controller
     }
 }
 
-class AuthorController extends base\components\Controller
+class AuthorController extends Controller
 {
     protected function accessRules()
     {
@@ -87,7 +88,7 @@ class AuthorController extends base\components\Controller
     }
     public function actionLogin() {
         $formLogin = new UserLoginForm();
-        $formData = base\components\App::requestPost(null, []);
+        $formData = App::requestPost(null, []);
         if(empty($formData)) {
             $this->layout = '';
             $this->render('templates/login', [
@@ -100,7 +101,7 @@ class AuthorController extends base\components\Controller
 
             $formLogin->setAttributes($formData);
             if($formLogin->validate()){
-                base\components\App::sessionStart();
+                App::sessionStart();
                 $author = $formLogin->getAuthor();
                 $expire = 0;
                 setcookie('userId', $author->id, $expire, '/');
@@ -121,7 +122,7 @@ class AuthorController extends base\components\Controller
 
     function actionLogout()
     {
-        base\components\UserIdentity::logout();
+        UserIdentity::logout();
         header('Location: /');
     }
     function actionCreate()

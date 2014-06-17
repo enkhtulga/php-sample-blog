@@ -1,7 +1,6 @@
 <?php
 namespace base\components;
-//use base\components\traits\Validator;
-require 'base/components/traits/Validator.php';
+use base\components\traits\Validator;
 /**
  * Class Form
  *
@@ -10,7 +9,7 @@ require 'base/components/traits/Validator.php';
  */
 class Form {
     /** Form has Validator trait */
-    use traits\Validator;
+    use Validator;
 
     /**
      * @var array $_names array of Form attributes names
