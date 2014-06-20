@@ -443,7 +443,6 @@ class Model {
             throw new \Exception('MySQL error: connection was not configured');
         }
         $class = get_called_class();
-
         $rs = mysqli_query(static::$_connection, $sql);
 
         $entities = array();

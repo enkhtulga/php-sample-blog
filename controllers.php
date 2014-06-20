@@ -28,6 +28,19 @@ class PostController extends Controller
         $posts = Post::getAll();
         $this->render('templates/list', array('post_list'=> $posts));
     }
+    public function actionFilter($by)
+    {
+        $currentDay = date("Y-m-d");
+        $currentWeek = date("W");
+        $currentMonth = date("Y-m");
+
+        switch($by){
+            case 'day' : $posts = POST::filterBy($currentDay); $filterName = 'day'; break;
+            case 'week' : $posts = POST::filterBy($currentWeek); $filterName = 'week'; break;
+            case 'month' : $posts = POST::filterBy($currentMonth); $filterName = 'month'; break;
+        }
+        $this->render('templates/filter', array('posts'=>$posts, 'filterName'=>$filterName));
+    }
 
     function actionView($id)
     {

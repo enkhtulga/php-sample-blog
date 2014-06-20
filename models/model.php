@@ -29,6 +29,29 @@ class Post extends Model
             'rule'=> self::RULE_ALL
         ),
     );
+    public static function filterBy($filter){
+        $fields = POST::getAttributeNames();
+        $like = '%';
+        if($filter==date("W")){
+            $query = "SELECT id, title, content, date, author_id
+                    FROM %s
+                    WHERE WEEK(date,1)=$filter
+                    ORDER BY date DESC";
+        }
+        else{
+            $query = "SELECT id, title, content, date, author_id
+                    FROM %s
+                    WHERE date LIKE '$filter%s'
+                    ORDER BY date DESC";
+        }
+		$sql = sprintf($query, static::$_table, $like);
+        $result = mysqli_query(static::$_connection, $sql) or die(mysql_error());
+		$obj = array();
+		while($row = mysqli_fetch_assoc($result)){
+			$obj[] = $row;
+		}
+        return $obj;
+    }
 }
 
 class Author extends Model
