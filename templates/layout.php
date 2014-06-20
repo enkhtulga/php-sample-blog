@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="blog">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,12 +28,6 @@
                 <?php } else { ?>
                         <a class="blog-nav-item" href="/author/login">Login</a>
                 <?php } ?>
-                <form class="nav-form navbar-right" role="search">
-                    <div class="form-group" style="display: inline-block; margin-top: 5px;">
-                        <input type="text" class="form-control" placeholder="Search">
-                    </div>
-                    <button type="submit" class="btn btn-default">Search</button>
-                </form>
             </nav>
         </div>
     </div>
@@ -49,7 +43,7 @@
 
         <div class="col-sm-8 blog-main">
 
-          <div class="blog-post">
+          <div class="blog-post" ng-controller="ErrorController">
             <h2 class="blog-post-title"><?php echo $title ?></h2>
 
 
@@ -106,6 +100,8 @@
 
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/angular.min.js"></script>
+    <script type="text/javascript" src="/assets/js/app.js"></script>
   </body>
 </html>
 

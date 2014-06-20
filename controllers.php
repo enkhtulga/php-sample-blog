@@ -2,6 +2,9 @@
 use base\components\Controller;
 use base\components\App;
 use UserLoginForm as ULF;
+use AuthorCreateForm as ACF;
+use AuthorEditForm as AEF;
+use AddPostForm as APF;
 use base\components\UserIdentity;
 
 class PostController extends Controller
@@ -34,18 +37,28 @@ class PostController extends Controller
     }
     function actionAdd()
     {
-        if(isset($_POST['title']) && isset($_POST['content'])){
-            $post = new Post();
-            $post->title = $_POST['title'];
-            $post->content = $_POST['content'];
-            $post->date = Date('Y-m-d H:i:s');
-            $post->author_id = $_COOKIE['userId'];
-            $post->save();
-            $location='Location: /';
-            header($location);
-        }
-        else{
-            $this->render('templates/add');
+        $formCreatePost = new AddPostForm();
+        $formData = App::requestPost(null, []);
+        if(empty($formData)) {
+            $this->layout = '';
+            $this->render('templates/add', [
+                'formCreatePost' => $formCreatePost,
+            ]);
+        } else {
+            $response = array(
+                'success' => false,
+            );
+
+            $formCreatePost->setAttributes($formData);
+            if($formCreatePost->validate()){
+                $response['success'] = true;
+                $response['href'] = App::urlFor('');
+            } else {
+                foreach($formCreatePost->getErrors() as $attributeName => $error) {
+                    $response[$attributeName] = $error;
+                }
+            }
+            $this->renderJson($response);
         }
     }
     function actionDelete($id)
@@ -56,19 +69,35 @@ class PostController extends Controller
     }
     function actionEdit($id)
     {
+        $formEditPost = new EditPostForm();
+        $formData = App::requestPost(null, []);
         $post = Post::getByPk($id);
-        if(isset($_POST['title']) && isset($_POST['content']))
-        {
-            $post->id = intval($id);
-            $post->title = $_POST['title'];
-            $post->content = $_POST['content'];
-            $post->date = $post->date;
-            $post->author_id = $_SESSION['userId'];
-            $post->save();
-            header('Location: /');
-        }
-        else{
-            $this->render('templates/edit', array('post'=>$post));
+        if(empty($formData)) {
+            $this->layout = '';
+            $this->render('templates/edit', [
+                'post' => $post,
+            ]);
+        } else {
+            $response = array(
+                'success' => false,
+            );
+
+            $formEditPost->setAttributes($formData);
+            if($formEditPost->validate()){
+                $attr =$formEditPost->getAttributes();
+                $post->title = $attr['title'];
+                $post->content = $attr['content'];
+                $post->date = $post->date;
+                $post->author_id = $_COOKIE['userId'];
+                $post->save();
+                $response['success'] = true;
+                $response['href'] = App::urlFor('');
+            } else {
+                foreach($formEditPost->getErrors() as $attributeName => $error) {
+                    $response[$attributeName] = $error;
+                }
+            }
+            $this->renderJson($response);
         }
     }
 }
@@ -108,11 +137,10 @@ class AuthorController extends Controller
                 setcookie('userName', $author->username, $expire, '/');
                 setcookie('userToken', $author->getSessionKey($_SERVER['HTTP_USER_AGENT']), $expire, '/');
                 $response['success'] = true;
-                header('Location: /');
+                $response['href'] = App::urlFor('');
             } else {
-                $response['msg'] = 'Invalid request:<br/>';
                 foreach($formLogin->getErrors() as $attributeName => $error) {
-                    $response['msg'] .= "$attributeName: $error<br/>";
+                    $response[$attributeName] = $error;
                 }
             }
             $this->renderJson($response);
@@ -127,17 +155,29 @@ class AuthorController extends Controller
     }
     function actionCreate()
     {
-        if(isset($_POST['name']) && isset($_POST['username']) && isset($_POST['password']))
-        {
-            $author = new Author();
-            $author->name = $_POST['name'];
-            $author->phone = $_POST['phone'];
-            $author->username = $_POST['username'];
-            $author->password = $_POST['password'];
-            $author->save();
-            header('Location: /author/list');
+        $formCreate = new AuthorCreateForm();
+        $formData = App::requestPost(null, []);
+        if(empty($formData)) {
+            $this->layout = '';
+            $this->render('templates/auth_create', [
+                'formCreate' => $formCreate,
+            ]);
+        } else {
+            $response = array(
+                'success' => false,
+            );
+
+            $formCreate->setAttributes($formData);
+            if($formCreate->validate()){
+                $response['success'] = true;
+                $response['href'] = App::urlFor('author/list');
+            } else {
+                foreach($formCreate->getErrors() as $attributeName => $error) {
+                    $response[$attributeName] = $error;
+                }
+            }
+            $this->renderJson($response);
         }
-        else $this->render('templates/auth_create');
     }
     function actionList()
     {
@@ -152,16 +192,36 @@ class AuthorController extends Controller
     }
     function actionEdit($id)
     {
+        $formEditAuthor = new AuthorEditForm();
+        $formData = App::requestPost(null, []);
         $author = Author::getByPk($id);
-        if(isset($_POST['name']) && isset($_POST['username']) && isset($_POST['password'])){
-            $author->id = intval($id);
-            $author->name = $_POST['name'];
-            $author->phone = $_POST['phone'];
-            $author->username = $_POST['username'];
-            $author->password = $_POST['password'];
-            $author->save();
-            header('Location: /author/list');
-        }else $this->render('templates/auth_edit',array('author'=>$author));
+        if(empty($formData)) {
+            $this->layout = '';
+            $this->render('templates/auth_edit', [
+                'author' => $author,
+            ]);
+        } else {
+            $response = array(
+                'success' => false,
+            );
+
+            $formEditAuthor->setAttributes($formData);
+            if($formEditAuthor->validate()){
+                $attr =$formEditAuthor->getAttributes();
+                $author->name = $attr['name'];
+                $author->phone = $attr['phone'];
+                $author->username = $attr['username'];
+                $author->password = $attr['password'];
+                $author->save();
+                $response['success'] = true;
+                $response['href'] = App::urlFor('author/list');
+            } else {
+                foreach($formEditAuthor->getErrors() as $attributeName => $error) {
+                    $response[$attributeName] = $error;
+                }
+            }
+            $this->renderJson($response);
+        }
     }
 }
 
